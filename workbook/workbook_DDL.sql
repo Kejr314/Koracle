@@ -133,7 +133,17 @@ SELECT * FROM VW_학생일반정보 WHERE 학번 = 'A213046';
 15. 춘 기술대학교는 매년 수강신청 기간만 되면 특정 인기 과목들에 수강 신청이 몰려 문제가 되고 있다. 
 최근 3년을 기준으로 수강인원이 가장 많았던 3과목을 찾는 구문을 작성해보시오.
 */
-SELECT 
+SELECT *
+FROM
+    (SELECT C.CLASS_NO AS 과목번호, C.CLASS_NAME AS 과목이름, COUNT(*) AS 누적수강생수
+    FROM TB_CLASS C
+    JOIN TB_GRADE G ON C.CLASS_NO = G.CLASS_NO
+    WHERE SUBSTR(G.TERM_NO, 1, 4) IN ('2005', '2006', '2007', '2008', '2009')
+    GROUP BY C.CLASS_NO, C.CLASS_NAME
+    ORDER BY 3 DESC
+    )
+WHERE ROWNUM <= 3; -- 상위 3개 결과 선택
+-- ROWNUM : 상위 N개의 행 선택. 결과가 정렬되기 전 할당되기 때문에 정렬된 결과에서 상위 N개의 행을 선택하려면 서브쿼리 사용해야 함
 
 
 
